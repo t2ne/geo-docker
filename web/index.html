@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t8ne/geoserver</title>
+    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icon/icon-apple.png"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/icon/icon-32.png"
+      sizes="32x32"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <ul>
+        <li>
+          <img
+            src="https://img.icons8.com/ios-filled/50/ffffff/menu.png"
+            id="menu-icon"
+            onmouseover="showDropdown()"
+            onmouseout="hideDropdown()"
+          />
+        </li>
+        <li id="search-container">
+          <input
+            type="text"
+            id="searchBox"
+            placeholder="Procurar..."
+            onkeyup="searchFeatures()"
+          />
+        </li>
+      </ul>
+      <div id="dropdown-menu" class="dropdown-content">
+        <button onclick="selectOption('calcular')">Calcular</button>
+        <button onclick="selectOption('mostrar')">Mostrar</button>
+      </div>
+    </nav>
+
+    <!-- Mapa -->
+    <div id="mapa"></div>
+
+    <!-- Footer -->
+    <footer>
+      <p style="margin-bottom: -30%"></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="maps.js"></script>
+  </body>
+</html>
