@@ -6,14 +6,14 @@
 
 - Fix do Styling da Search Box
 
+- Coisas de SQL
+
 - Labels e tudo do género ao carregar num polígono ou ponto ou o que seja
 
 - Carregar num ponto/linhas/pol. e com um slider aumentar o buffer de tal sitio
 
 - Aquele pop-up que Mostra a informação de X sítio que eu meti
 
-- Meter uma escala no canto inferior esquerdo do Leaflet
-
-- HeatMaps
+- URL novo para heatmap ou fazer o meu próprio
 
 - Extras (?)

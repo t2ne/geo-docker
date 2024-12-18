@@ -1,9 +1,116 @@
 const map = L.map("mapa").setView([41.5362, -8.7821], 13);
 
-// Base layer for the map
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; OpenStreetMap contributors",
-}).addTo(map);
+// Base Layers
+const roadsLayer = L.tileLayer(
+  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    attribution: "&copy; OpenStreetMap contributors",
+  }
+).addTo(map);
+
+const satelliteLayer = L.tileLayer(
+  "https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+  {
+    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+    attribution: "Google Satellite",
+  }
+);
+
+const heatmapLayer = L.tileLayer.wms(
+  "https://earthquake.usgs.gov/arcgis/services/eq/catalog_1day_M25/MapServer/WmsServer",
+  {
+    layers: "1", // Heatmap layer for earthquake density
+    format: "image/png",
+    transparent: true,
+    attribution: "USGS Earthquake Heatmap",
+  }
+);
+
+// WMS Layers
+// const tigerPoiLayer = L.tileLayer
+//   .wms("http://localhost:8081/geoserver/wms", {
+//     layers: "tiger:poi",
+//     format: "image/png",
+//     transparent: true,
+//     attribution: "Tiger POI",
+//   })
+//   .addTo(map);
+
+// const tigerPolyLandmarksLayer = L.tileLayer
+//   .wms("http://localhost:8081/geoserver/wms", {
+//     layers: "tiger:poly_landmarks",
+//     format: "image/png",
+//     transparent: true,
+//     attribution: "Tiger Poly Landmarks",
+//   })
+//   .addTo(map);
+
+// const tigerRoadsLayer = L.tileLayer
+//   .wms("http://localhost:8081/geoserver/wms", {
+//     layers: "tiger_roads",
+//     format: "image/png",
+//     transparent: true,
+//     attribution: "Tiger Roads",
+//   })
+//   .addTo(map);
+
+// Layer Control
+const layerControl = L.control
+  .layers(null, {
+    // "Tiger POI": tigerPoiLayer,
+    // "Tiger Poly Landmarks": tigerPolyLandmarksLayer,
+    // "Tiger Roads": tigerRoadsLayer,
+  })
+  .addTo(map);
+
+// Scale Bar
+L.control
+  .scale({
+    position: "bottomleft",
+    imperial: false, // Use only metric units
+  })
+  .addTo(map);
+
+// Layer Selector
+const baseLayers = {
+  Roads: roadsLayer,
+  Satellite: satelliteLayer,
+  Heatmap: heatmapLayer,
+};
+
+// Create and configure the select dropdown
+const layerSelectBox = document.createElement("select");
+layerSelectBox.id = "layer-select";
+layerSelectBox.style.position = "absolute";
+layerSelectBox.style.top = "10px";
+layerSelectBox.style.left = "1200px";
+layerSelectBox.style.zIndex = "1000";
+layerSelectBox.style.padding = "5px";
+layerSelectBox.style.border = "1px solid #ccc";
+layerSelectBox.style.borderRadius = "5px";
+layerSelectBox.style.backgroundColor = "#fff";
+
+// Populate the select box
+Object.keys(baseLayers).forEach((layerName) => {
+  const option = document.createElement("option");
+  option.value = layerName;
+  option.textContent = layerName;
+  layerSelectBox.appendChild(option);
+});
+
+// Handle layer switching
+layerSelectBox.addEventListener("change", (e) => {
+  const selectedLayerName = e.target.value;
+  // Remove all existing base layers
+  Object.values(baseLayers).forEach((layer) => map.removeLayer(layer));
+  // Add the selected base layer
+  baseLayers[selectedLayerName].addTo(map);
+});
+
+// Add the select box to the DOM
+document.body.appendChild(layerSelectBox);
+
+// Existing map functionality and controls (unchanged)
 
 // Control variables
 let drawingMode = null;
@@ -138,8 +245,8 @@ function getCurrentPosition() {
 function searchFeatures() {
   const query = document.getElementById("searchBox").value.toLowerCase();
   points.forEach((marker) => {
-    const markerName = marker.getPopup().getContent().toLowerCase();
-    if (markerName.includes(query)) {
+    const markerName = marker.getPopup().getContent()?.toLowerCase();
+    if (markerName?.includes(query)) {
       marker.openPopup();
     } else {
       marker.closePopup();
