@@ -16,50 +16,68 @@ const satelliteLayer = L.tileLayer(
   }
 );
 
-const heatmapLayer = L.tileLayer.wms(
-  "https://earthquake.usgs.gov/arcgis/services/eq/catalog_1day_M25/MapServer/WmsServer",
+const heatmapLayer = L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
   {
-    layers: "1", // Heatmap layer for earthquake density
-    format: "image/png",
-    transparent: true,
-    attribution: "USGS Earthquake Heatmap",
+    attribution:
+      "&copy; <a href='https://www.carto.com/'>CARTO</a> | Dark Heatmap",
   }
 );
 
 // WMS Layers
-// const tigerPoiLayer = L.tileLayer
-//   .wms("http://localhost:8081/geoserver/wms", {
-//     layers: "tiger:poi",
-//     format: "image/png",
-//     transparent: true,
-//     attribution: "Tiger POI",
-//   })
-//   .addTo(map);
+const praiasLayer = L.tileLayer
+  .wms("http://localhost:8081/geoserver/wms", {
+    layers: "tp-sig:praias",
+    format: "image/png",
+    transparent: true,
+    attribution: "Praias de Esposende",
+  })
+  .addTo(map);
 
-// const tigerPolyLandmarksLayer = L.tileLayer
-//   .wms("http://localhost:8081/geoserver/wms", {
-//     layers: "tiger:poly_landmarks",
-//     format: "image/png",
-//     transparent: true,
-//     attribution: "Tiger Poly Landmarks",
-//   })
-//   .addTo(map);
+const entidadesLayer = L.tileLayer
+  .wms("http://localhost:8081/geoserver/wms", {
+    layers: "tp-sig:entidades",
+    format: "image/png",
+    transparent: true,
+    attribution: "Edifícios de Esposende",
+  })
+  .addTo(map);
 
-// const tigerRoadsLayer = L.tileLayer
-//   .wms("http://localhost:8081/geoserver/wms", {
-//     layers: "tiger_roads",
-//     format: "image/png",
-//     transparent: true,
-//     attribution: "Tiger Roads",
-//   })
-//   .addTo(map);
+const estradasLayer = L.tileLayer
+  .wms("http://localhost:8081/geoserver/wms", {
+    layers: "tp-sig:estradas",
+    format: "image/png",
+    transparent: true,
+    attribution: "Estradas de Esposende",
+  })
+  .addTo(map);
+
+const poisLayer = L.tileLayer
+  .wms("http://localhost:8081/geoserver/wms", {
+    layers: "tp-sig:pois",
+    format: "image/png",
+    transparent: true,
+    attribution: "Pontos de Interesse de Esposende",
+  })
+  .addTo(map);
+
+const trilhosLayer = L.tileLayer
+  .wms("http://localhost:8081/geoserver/wms", {
+    layers: "tp-sig:trilhos",
+    format: "image/png",
+    transparent: true,
+    attribution: "Trilhos de Esposende",
+  })
+  .addTo(map);
 
 // Layer Control
 const layerControl = L.control
   .layers(null, {
-    // "Tiger POI": tigerPoiLayer,
-    // "Tiger Poly Landmarks": tigerPolyLandmarksLayer,
-    // "Tiger Roads": tigerRoadsLayer,
+    Praias: praiasLayer,
+    Entidades: entidadesLayer,
+    Estradas: estradasLayer,
+    "Pontos de Interesse": poisLayer,
+    Trilhos: trilhosLayer,
   })
   .addTo(map);
 
@@ -67,7 +85,7 @@ const layerControl = L.control
 L.control
   .scale({
     position: "bottomleft",
-    imperial: false, // Use only metric units
+    imperial: false,
   })
   .addTo(map);
 

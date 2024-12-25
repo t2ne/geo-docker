@@ -1,0 +1,1 @@
+--- ver como é que se acessa o código sql da tp-sig /var/liv ????
