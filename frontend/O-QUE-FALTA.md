@@ -1,22 +1,21 @@
 ## FALTA:
 
-- Fix do Enter para terminar os Polígonos
+- Fix do click direito para terminar os Polígonos
+
+- Preview de como vai ficar a linha e polígono, also checkar lógica do código (sirine a.)
 
 - Mostrar o pequeno ponto que o primeiro ponto de um polígono tem ao criar linhas
 
-- Fix do Styling da Search Box
-
 -//-
 
-- qgis stuff (tipo shp's i guess?)
+- Atualizar e acabar APIs (estradas, pois, praias, trilhos)
 
-- Carregar num ponto/linhas/pol. e com um slider aumentar o buffer de tal sitio (api tambem ig)
+- Fazer api para buffer
 
-- Aquele pop-up que Mostra a info, labels e etc de X sítio que eu clicko (popup com info da api maybe?)
+- Pop-up de fetch da api de cada coisa
 
-- URL novo para heatmap ou fazer o meu próprio
+- HeatMap
 
-- Extras (?)
+- API para o save dos pontos, linhas e polígonos
 
-- METER API, A API É POR EXEMPLO PARA IR Á BASE DE DADOS IR BUSCAR CENAS TP ID OU NUM VIZINHOS OU BUFFER OU CENAS DO GÉNEROS
-  
+- Extras (?)  

@@ -15,10 +15,12 @@ body {
   padding: 5px;
   display: flex;
   align-items: center;
+  justify-content: center; /* Center the content horizontally */
   width: 10%;
   margin-left: auto; /* Added margin-left: auto */
   margin-right: 1%; /* Increased margin-right value */
-  /*margin-top: 10px; /* Updated margin-bottom value */
+  height: 40px; /* Adjust the height to be centered */
+  margin-top: -3.5%;
 }
 
 .search-box input[type="text"] {
@@ -79,6 +81,13 @@ nav ul li {
 nav ul li input {
   padding: 5px;
   font-size: 14px;
+}
+
+/* Flexbox Layout for Navbar content */
+nav .menu-and-search {
+  display: flex;
+  align-items: center; /* Vertically centers the content */
+  gap: 20px;
 }
 
 /* Menu Buttons */

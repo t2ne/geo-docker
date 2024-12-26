@@ -16,17 +16,35 @@
       sizes="32x32"
       type="image/png"
     />
+
+    <!-- Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
+
+    <!-- Leaflet Draw CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
+    />
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Leaflet Draw JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   </head>
   <body>
     <!-- Menu Icon -->
     <div id="menu-icon" onclick="toggleMenu()">
-      <img src="https://img.icons8.com/ios-filled/50/ffffff/menu.png" />
+      <img
+        src="https://img.icons8.com/ios-filled/50/ffffff/menu.png"
+        alt="Menu Icon"
+      />
     </div>
 
     <!-- Menu Buttons -->
@@ -60,7 +78,7 @@
       />
     </div>
 
-    <!-- Mapa -->
+    <!-- Map -->
     <div id="mapa"></div>
 
     <!-- Footer -->
@@ -68,7 +86,7 @@
       <p style="margin-bottom: -30%"></p>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Custom Scripts -->
     <script src="maps.js"></script>
   </body>
 </html>
