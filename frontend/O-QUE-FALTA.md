@@ -17,5 +17,3 @@
 - HeatMap
 
 - API para o save dos pontos, linhas e polígonos
-
-- Extras (?)  

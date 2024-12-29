@@ -3,43 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>t2ne/geo</title>
-    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/icon/icon-apple.png"
-    />
-    <link
-      rel="shortcut icon"
-      href="assets/icon/icon-32.png"
-      sizes="32x32"
-      type="image/png"
-    />
 
-    <!-- Leaflet CSS -->
+    <title>t2ne/geo</title>
+
+    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Leaflet -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-
-    <!-- Leaflet Draw CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
     />
-
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="styles.css" />
-
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Leaflet Draw JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+    <!-- Leaflet Search -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css"
+    />
+    <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
+
+    <!-- Proj4-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.2/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   </head>
+
   <body>
-    <!-- Menu Icon -->
     <div id="menu-icon" onclick="toggleMenu()">
       <img
         src="https://img.icons8.com/ios-filled/50/ffffff/menu.png"
@@ -47,46 +46,56 @@
       />
     </div>
 
-    <!-- Menu Buttons -->
-    <div id="buttons-menu" class="buttons-menu">
-      <button id="point-btn" onclick="toggleButton('point')" class="inactive">
-        Point
-      </button>
-      <button id="line-btn" onclick="toggleButton('line')" class="inactive">
-        Line
-      </button>
-      <button
-        id="polygon-btn"
-        onclick="toggleButton('polygon')"
-        class="inactive"
-      >
-        Polygon
-      </button>
-      <button id="current-position" onclick="getCurrentPosition()">
-        Location
-      </button>
-      <button id="delete-btn" onclick="toggleDelete()">Delete</button>
-    </div>
+    <nav>
+      <div id="buttons-menu" class="buttons-menu">
+        <button id="view-btn" onclick="toggleView()">Ver</button> <!--CLASS ACTIVE QUANDO DOU LOAD AO SITE-->
+        <button id="create-btn" onclick="toggleCreate()">Adicionar</button>
+        <button id="delete-btn" onclick="toggleDelete()">Remover</button>
+        <button id="save-btn" onclick="saveFeatures()">Salvar</button>
+        <a style="color: white">|</a>
+        <button id="point-btn" onclick="toggleButton('point')" class="inactive">
+          Ponto
+        </button>
+        <button id="line-btn" onclick="toggleButton('line')" class="inactive">
+          Linha
+        </button>
+        <button
+          id="polygon-btn"
+          onclick="toggleButton('polygon')"
+          class="inactive"
+        >
+          Polígono
+        </button>
+        <a style="color: white">|</a>
+        <!-- Feito-->
+        <button id="current-position" onclick="getCurrentPosition()">
+          Loc. Atual
+        </button>
+        <a style="color: white">|</a>
+        <input
+          type="text"
+          id="searchBox"
+          placeholder="Procurar..."
+          onkeyup="searchFeatures()"
+        />
+        <a style="color: white; margin-left: 15px">|</a>
+        <select id="layer-select">
+          <option value="Estradas">Estradas</option>
+          <option value="Satélite">Satélite</option>
+          <option value="HeatMap">HeatMap</option>
+        </select>
+      </div>
+    </nav>
 
-    <!-- Search Box -->
-    <div id="search-box" class="search-box">
-      <input
-        type="text"
-        id="searchBox"
-        placeholder="Search..."
-        onkeyup="searchFeatures()"
-      />
-    </div>
-
-    <!-- Map -->
     <div id="mapa"></div>
 
-    <!-- Footer -->
     <footer>
-      <p style="margin-bottom: -30%"></p>
+      <span>Coordenadas do Mouse: </span>
+      <a id="mouse-coords-3763">3763: [0, 0]</a>
+      <span> | </span>
+      <a id="mouse-coords-4326">4326: [0, 0]</a>
     </footer>
 
-    <!-- Custom Scripts -->
     <script src="maps.js"></script>
   </body>
 </html>

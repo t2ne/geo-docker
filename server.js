@@ -1,11 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const { Client } = require("pg");
 
 const app = express();
+app.use(cors());
 const port = 3000;
 
-app.use(bodyParser.json()); // For parsing application/json
+app.use(bodyParser.json());
 
 // ---------------------------- Save routes ----------------------------
 
@@ -19,7 +21,7 @@ app.post("/save-point", function (req, res) {
   });
   client.connect();
 
-  const pointGeom = `POINT(${req.body.lng} ${req.body.lat})`; // Use correct projection here!
+  const pointGeom = `POINT(${req.body.lng} ${req.body.lat})`;
 
   client.query(
     "INSERT INTO points (shape_id, point) VALUES ($1, ST_SetSRID(ST_GeomFromText($2), 3763))",

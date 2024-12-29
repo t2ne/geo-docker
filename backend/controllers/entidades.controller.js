@@ -23,20 +23,6 @@ class EntidadesController {
       res.status(500).json({ error: "Failed to fetch entidade" });
     }
   }
-
-  async getByNome(req, res) {
-    try {
-      const { nome } = req.params;
-      const entidade = await EntidadesModel.getByNome(nome);
-      if (entidade) {
-        res.status(200).json(entidade);
-      } else {
-        res.status(404).json({ error: "Entidade not found" });
-      }
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch entidade" });
-    }
-  }
 }
 
 module.exports = new EntidadesController();

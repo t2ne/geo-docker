@@ -19,10 +19,63 @@ class Database {
     await this.conexao.end();
   }
 
+  async getNomes(nome) {
+    const query = `
+      SELECT 
+        'entidades' AS table_name, e.id, e.nome 
+      FROM entidades e 
+      WHERE e.nome = $1
+      UNION ALL
+      SELECT 
+        'praias' AS table_name, p.id, p.nome 
+      FROM praias p 
+      WHERE p.nome = $1
+      UNION ALL
+      SELECT 
+        'pois' AS table_name, po.id, po.nome 
+      FROM pois po 
+      WHERE po.nome = $1
+      UNION ALL
+      SELECT 
+        'estradas' AS table_name, es.id, es.nome 
+      FROM estradas es 
+      WHERE es.nome = $1
+      UNION ALL
+      SELECT 
+        'trilhos' AS table_name, tr.id, tr.nome 
+      FROM trilhos tr 
+      WHERE tr.nome = $1
+    `;
+
+    const result = await this.conexao.query(query, [nome]);
+    return result.rows;
+  }
+
   // Entidades methods
   async getEntidadesId() {
     const result = await this.conexao.query("SELECT id FROM entidades");
     return result.rows.map((row) => row.id);
+  }
+
+  async getEntidadesInfo(id) {
+    const result = await this.conexao.query(
+      `SELECT e.id, e.nome, e.tipo, t.nome AS nome_tipo 
+       FROM entidades e 
+       JOIN tipos t ON e.tipo = t.id 
+       WHERE e.id = $1`,
+      [id]
+    );
+    const entidade = result.rows[0];
+    const nome_tipo = entidade.nome_tipo;
+    const coords = await this.getEntidadesCoords(id);
+
+    return {
+      id: entidade.id,
+      nome: entidade.nome,
+      tipo: entidade.tipo,
+      nome_tipo: nome_tipo,
+      coords: coords,
+    };
   }
 
   async getEntidadesTipo(id) {

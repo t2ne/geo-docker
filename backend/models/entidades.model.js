@@ -15,14 +15,6 @@ class EntidadesModel {
     );
     return result.rows[0];
   }
-
-  async getByNome(nome) {
-    const result = await db.query(
-      "SELECT id, nome, ST_AsGeoJSON(geom) AS geometry FROM entidades WHERE nome = $1",
-      [nome]
-    );
-    return result.rows[0];
-  }
 }
 
 module.exports = new EntidadesModel();
