@@ -8,4 +8,30 @@ The project directory structure is organized as follows:
 
 ... still not completed, working on it.
 
-t8ne - 2024
+-//- 
+
+## Fix: Problema com o CORS
+
+- Docker -> Containers -> geoserver
+
+- Aba 'Files'
+
+- Ir a '/usr/local/tomcat/webapps/geoserver/WEB-INF'
+
+- Entrar no ficheiro 'web.xml'
+
+- Dar enable do CORS - Uncomment da linha 165 á 201
+
+- Save do ficheiro
+
+- Ir á aba 'Exec' do container
+
+- Escrever o comando: su
+
+- Depois: cd /usr/local/tomcat/bin/shutdown.sh
+
+- Reiniciar o container
+
+- De novo: su
+
+- cd /usr/local/tomcat/bin/startup.sh

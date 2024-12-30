@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { Client } = require("pg");
+const { Pool } = require("pg");
 
 const app = express();
 app.use(cors());
@@ -9,21 +9,24 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+// Create a connection pool
+const pool = new Pool({
+  host: "localhost",
+  user: "postgres",
+  password: "postgres",
+  database: "tp-sig",
+  max: 20, // Number of connections in the pool
+  idleTimeoutMillis: 30000, // 30 seconds
+  connectionTimeoutMillis: 2000, // 2 seconds
+});
+
 // ---------------------------- Save routes ----------------------------
 
 // Save Point
 app.post("/save-point", function (req, res) {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const pointGeom = `POINT(${req.body.lng} ${req.body.lat})`;
 
-  client.query(
+  pool.query(
     "INSERT INTO points (shape_id, point) VALUES ($1, ST_SetSRID(ST_GeomFromText($2), 3763))",
     [req.body.shape_id, pointGeom],
     function (error, result) {
@@ -40,19 +43,11 @@ app.post("/save-point", function (req, res) {
 
 // Save Line
 app.post("/save-line", function (req, res) {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const lineGeom = `LINESTRING(${req.body.coord
     .map((c) => `${c[0]} ${c[1]}`)
     .join(", ")})`;
 
-  client.query(
+  pool.query(
     "SELECT ST_GeomFromText($1, 3763)",
     [lineGeom],
     function (error, result) {
@@ -60,7 +55,7 @@ app.post("/save-line", function (req, res) {
         console.error(error);
         res.status(500).json({ error: "Erro ao adicionar a linha" });
       } else {
-        client.query(
+        pool.query(
           "INSERT INTO lines (id, geom) VALUES ($1, $2)",
           [req.body.id, result.rows[0].st_geomfromtext],
           function (error, result) {
@@ -80,19 +75,11 @@ app.post("/save-line", function (req, res) {
 
 // Save Polygon
 app.post("/save-polygon", function (req, res) {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const polyGeom = `POLYGON((${req.body.coord[0]
     .map((c) => `${c[0]} ${c[1]}`)
     .join(", ")}))`;
 
-  client.query(
+  pool.query(
     "SELECT ST_GeomFromText($1, 3763)",
     [polyGeom],
     function (error, result) {
@@ -100,7 +87,7 @@ app.post("/save-polygon", function (req, res) {
         console.error(error);
         res.status(500).json({ error: "Erro ao adicionar o polígono" });
       } else {
-        client.query(
+        pool.query(
           "INSERT INTO polygons (id, geom) VALUES ($1, $2)",
           [req.body.id, result.rows[0].st_geomfromtext],
           function (error, result) {
@@ -122,16 +109,8 @@ app.post("/save-polygon", function (req, res) {
 
 // Get Point by ID
 app.get("/api/points/:id", (req, res) => {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const id = req.params.id;
-  client.query(
+  pool.query(
     "SELECT ST_AsText(point) FROM points WHERE shape_id = $1",
     [id],
     (error, result) => {
@@ -147,16 +126,8 @@ app.get("/api/points/:id", (req, res) => {
 
 // Get Line by ID
 app.get("/api/lines/:id", (req, res) => {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const id = req.params.id;
-  client.query(
+  pool.query(
     "SELECT ST_AsText(geom) FROM lines WHERE id = $1",
     [id],
     (error, result) => {
@@ -172,16 +143,8 @@ app.get("/api/lines/:id", (req, res) => {
 
 // Get Polygon by ID
 app.get("/api/polygons/:id", (req, res) => {
-  const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "tp-sig",
-  });
-  client.connect();
-
   const id = req.params.id;
-  client.query(
+  pool.query(
     "SELECT ST_AsText(geom) FROM polygons WHERE id = $1",
     [id],
     (error, result) => {

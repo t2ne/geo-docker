@@ -75,4 +75,30 @@ router.get("/:id/coords", async (req, res) => {
   }
 });
 
+router.get("/:id/buffer/:distance", async (req, res) => {
+  const { id, distance } = req.params;
+  const db = new Database();
+  try {
+    await db.connect();
+    const bufferValue = parseFloat(distance);
+    if (isNaN(bufferValue)) {
+      return res.status(400).json({ error: "Invalid buffer distance" });
+    }
+
+    const bufferedGeom = await db.getBufferEntidades(id, bufferValue);
+    if (bufferedGeom) {
+      res.json({ id, bufferValue, bufferedGeom });
+    } else {
+      res
+        .status(404)
+        .json({ error: "Entity not found or no geometry available" });
+    }
+  } catch (error) {
+    console.error("Error fetching buffered geometry:", error);
+    res.status(500).json({ error: "Failed to fetch buffered geometry" });
+  } finally {
+    await db.disconnect();
+  }
+});
+
 module.exports = router;

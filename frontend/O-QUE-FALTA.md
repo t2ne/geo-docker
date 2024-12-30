@@ -6,13 +6,11 @@
 
 - Mostrar o pequeno ponto que o primeiro ponto de um polígono tem ao criar linhas
 
+- Toggles da View, Delete, e Criar
+
 -//-
 
-- Atualizar e acabar APIs (estradas, pois, praias, trilhos)
-
-- Fazer api para buffer
-
-- Pop-up de fetch da api de cada coisa
+- Slider dentro do popup que chama um getBufferTabela a cada mudança
 
 - HeatMap
 

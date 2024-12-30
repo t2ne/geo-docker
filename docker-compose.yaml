@@ -3,13 +3,13 @@ services:
   dbgis:
     image: postgis/postgis
     container_name: postgis_cnt
-    restart: unless-stopped # always
+    restart: unless-stopped
     ports: 
       - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres # default database
+      POSTGRES_DB: postgres
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
@@ -18,7 +18,7 @@ services:
   pgadmin4:
     image: dpage/pgadmin4
     container_name: pgadmin4_cnt
-    restart: unless-stopped # always
+    restart: unless-stopped
     depends_on:
       - dbgis
     ports:
@@ -26,9 +26,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False' # pgAdmin runs in a single-user desktop mode, which is more akin to a standalone application
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
     logging:
-      driver: "none" # instructing Docker not to collect or store any logs for this service
+      driver: "none"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     networks:
@@ -41,4 +41,3 @@ networks:
 volumes:
   pg_data:
   pgadmin_data:
-  
