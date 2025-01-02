@@ -10,6 +10,22 @@ The project directory structure is organized as follows:
 
 -//- 
 
+## Como inserir base de dados
+
+- Entrar no pgadmin4
+
+- Right-Click Databases -> Create Database
+
+- Nome: tp-sig -> Save
+
+- Right-Click em tp-sig -> Restore
+
+- Em filename, ir buscar ficheiro 'tp-sig.sql'
+
+- Clicar em Restore.
+
+Depois disto é necessário publicar a store, camada e layers no geoserver.
+
 ## Fix: Problema com o CORS
 
 - Docker -> Containers -> geoserver

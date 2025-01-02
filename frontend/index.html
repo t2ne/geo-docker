@@ -36,6 +36,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script type="module" src="heatcanvas/heatcanvas.js"></script>
+    <script type="module" src="heatcanvas/heatcanvas-leaflet.js"></script>
   </head>
 
   <body>
@@ -48,26 +50,20 @@
 
     <nav>
       <div id="buttons-menu" class="buttons-menu">
-        <button id="view-btn" onclick="toggleView()">Ver</button> <!--CLASS ACTIVE QUANDO DOU LOAD AO SITE-->
-        <button id="create-btn" onclick="toggleCreate()">Adicionar</button>
-        <button id="delete-btn" onclick="toggleDelete()">Remover</button>
-        <button id="save-btn" onclick="saveFeatures()">Salvar</button>
+        <a style="margin: 20px">Medir:</a>
+        <select id="measure-select">
+          <option value="none">Nada</option>
+          <option value="distance">Distância</option>
+          <option value="area">Área</option>
+        </select>
         <a style="color: white">|</a>
-        <button id="point-btn" onclick="toggleButton('point')" class="inactive">
-          Ponto
-        </button>
-        <button id="line-btn" onclick="toggleButton('line')" class="inactive">
-          Linha
-        </button>
-        <button
-          id="polygon-btn"
-          onclick="toggleButton('polygon')"
-          class="inactive"
-        >
-          Polígono
-        </button>
+        <a style="margin: 20px">Vista:</a>
+        <select id="layer-select">
+          <option value="Estradas">Estradas</option>
+          <option value="Satélite">Satélite</option>
+          <option value="HeatMap">HeatMap</option>
+        </select>
         <a style="color: white">|</a>
-        <!-- Feito-->
         <button id="current-position" onclick="getCurrentPosition()">
           Loc. Atual
         </button>
@@ -78,12 +74,6 @@
           placeholder="Procurar..."
           onkeyup="searchFeatures()"
         />
-        <a style="color: white; margin-left: 15px">|</a>
-        <select id="layer-select">
-          <option value="Estradas">Estradas</option>
-          <option value="Satélite">Satélite</option>
-          <option value="HeatMap">HeatMap</option>
-        </select>
       </div>
     </nav>
 

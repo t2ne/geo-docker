@@ -222,6 +222,14 @@ class Database {
     };
   }
 
+  async getEstradasTipo(id) {
+    const result = await this.conexao.query(
+      "SELECT tipo FROM estradas WHERE id = $1",
+      [id]
+    );
+    return result.rows.length > 0 ? result.rows[0].tipo : null;
+  }
+
   async getEstradasCoords(id) {
     const latitude = await this.getLatitude(id, "estradas");
     const longitude = await this.getLongitude(id, "estradas");
@@ -257,6 +265,14 @@ class Database {
       nome_tipo: nome_tipo,
       coords: coords,
     };
+  }
+
+  async getTrilhosTipo(id) {
+    const result = await this.conexao.query(
+      "SELECT tipo FROM trilhos WHERE id = $1",
+      [id]
+    );
+    return result.rows.length > 0 ? result.rows[0].tipo : null;
   }
 
   async getTrilhosCoords(id) {
