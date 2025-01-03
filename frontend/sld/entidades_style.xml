@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor version="1.0.0"
+    xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+    xmlns="http://www.opengis.net/sld"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>entidades</Name>
+        <UserStyle>
+            <Title>Estilo das Entidades</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>Entidades Azul</Name>
+                    <Title>Entidades com Tipo = 6</Title>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tipo</ogc:PropertyName>
+                            <ogc:Literal>6</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PolygonSymbolizer>
+                        <Fill>
+                            <CssParameter name="fill">#0000FF</CssParameter> <!-- Azul -->
+                            <CssParameter name="fill-opacity">0.5</CssParameter>
+                        </Fill>
+                        <Stroke>
+                            <CssParameter name="stroke">#0000FF</CssParameter>
+                            <CssParameter name="stroke-width">1</CssParameter>
+                        </Stroke>
+                    </PolygonSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>Entidades Roxo</Name>
+                    <Title>Entidades com Tipo = 1</Title>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tipo</ogc:PropertyName>
+                            <ogc:Literal>1</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PolygonSymbolizer>
+                        <Fill>
+                            <CssParameter name="fill">#800080</CssParameter> <!-- Roxo -->
+                            <CssParameter name="fill-opacity">0.5</CssParameter>
+                        </Fill>
+                        <Stroke>
+                            <CssParameter name="stroke">#800080</CssParameter>
+                            <CssParameter name="stroke-width">1</CssParameter>
+                        </Stroke>
+                    </PolygonSymbolizer>
+                </Rule>
+                <!-- Labels -->
+                <Rule>
+                    <Name>Rótulos</Name>
+                    <TextSymbolizer>
+                        <Label>
+                            <ogc:PropertyName>nome</ogc:PropertyName>
+                        </Label>
+                        <Font>
+                            <CssParameter name="font-family">Arial</CssParameter>
+                            <CssParameter name="font-size">12</CssParameter>
+                            <CssParameter name="font-style">normal</CssParameter>
+                            <CssParameter name="font-weight">bold</CssParameter>
+                        </Font>
+                        <LabelPlacement>
+                            <PointPlacement>
+                                <AnchorPoint>
+                                    <AnchorPointX>0.5</AnchorPointX>
+                                    <AnchorPointY>0.5</AnchorPointY>
+                                </AnchorPoint>
+                            </PointPlacement>
+                        </LabelPlacement>
+                        <Fill>
+                            <CssParameter name="fill">#000000</CssParameter>
+                        </Fill>
+                    </TextSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>

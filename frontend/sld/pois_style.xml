@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor version="1.0.0"
+    xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+    xmlns="http://www.opengis.net/sld"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:xlink="http://www.opengis.net/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>pois</Name>
+        <UserStyle>
+            <Title>Estilo dos POIs</Title>
+            <FeatureTypeStyle>
+                <!-- Style for tipo = 4 (Brown) -->
+                <Rule>
+                    <Name>Tipo 4</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tipo</ogc:PropertyName>
+                            <ogc:Literal>4</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PolygonSymbolizer>
+                        <Fill>
+                            <CssParameter name="fill">#8B4513</CssParameter> <!-- Brown -->
+                            <CssParameter name="fill-opacity">0.6</CssParameter>
+                        </Fill>
+                        <Stroke>
+                            <CssParameter name="stroke">#000000</CssParameter>
+                            <CssParameter name="stroke-width">1</CssParameter>
+                        </Stroke>
+                    </PolygonSymbolizer>
+                </Rule>
+                <!-- Style for tipo = 8 (Pink) -->
+                <Rule>
+                    <Name>Tipo 8</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tipo</ogc:PropertyName>
+                            <ogc:Literal>8</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PolygonSymbolizer>
+                        <Fill>
+                            <CssParameter name="fill">#FFC0CB</CssParameter> <!-- Pink -->
+                            <CssParameter name="fill-opacity">0.6</CssParameter>
+                        </Fill>
+                        <Stroke>
+                            <CssParameter name="stroke">#000000</CssParameter>
+                            <CssParameter name="stroke-width">1</CssParameter>
+                        </Stroke>
+                    </PolygonSymbolizer>
+                </Rule>
+                <!-- Style for tipo = 3 (Orange) -->
+                <Rule>
+                    <Name>Tipo 3</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tipo</ogc:PropertyName>
+                            <ogc:Literal>3</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PolygonSymbolizer>
+                        <Fill>
+                            <CssParameter name="fill">#FFA500</CssParameter> <!-- Orange -->
+                            <CssParameter name="fill-opacity">0.6</CssParameter>
+                        </Fill>
+                        <Stroke>
+                            <CssParameter name="stroke">#000000</CssParameter>
+                            <CssParameter name="stroke-width">1</CssParameter>
+                        </Stroke>
+                    </PolygonSymbolizer>
+                </Rule>
+                <!-- Labels for POIs -->
+                <Rule>
+                    <Name>Rótulos</Name>
+                    <TextSymbolizer>
+                        <Label>
+                            <ogc:PropertyName>nome</ogc:PropertyName>
+                        </Label>
+                        <Font>
+                            <CssParameter name="font-family">Arial</CssParameter>
+                            <CssParameter name="font-size">12</CssParameter>
+                            <CssParameter name="font-style">normal</CssParameter>
+                            <CssParameter name="font-weight">bold</CssParameter>
+                        </Font>
+                        <LabelPlacement>
+                            <PointPlacement>
+                                <AnchorPoint>
+                                    <AnchorPointX>0.5</AnchorPointX>
+                                    <AnchorPointY>0.5</AnchorPointY>
+                                </AnchorPoint>
+                            </PointPlacement>
+                        </LabelPlacement>
+                        <Fill>
+                            <CssParameter name="fill">#000000</CssParameter> <!-- Black text -->
+                        </Fill>
+                    </TextSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>

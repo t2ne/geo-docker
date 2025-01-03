@@ -81,20 +81,33 @@ L.control
     imperial: false,
   })
   .addTo(map);
-
 const baseLayers = {
   Estradas: roadsLayer,
   Satélite: satelliteLayer,
   HeatMap: heatmapLayer,
 };
 
+// Mantenha as camadas WMS fixas
+const wmsLayers = [
+  praiasLayer,
+  entidadesLayer,
+  estradasLayer,
+  poisLayer,
+  trilhosLayer,
+];
+
+wmsLayers.forEach((layer) => layer.addTo(map));
+
 const layerSelectBox = document.getElementById("layer-select");
 
 layerSelectBox.addEventListener("change", (e) => {
   const selectedLayerName = e.target.value;
 
-  Object.values(baseLayers).forEach((layer) => map.removeLayer(layer));
-
+  Object.values(baseLayers).forEach((layer) => {
+    if (map.hasLayer(layer)) {
+      map.removeLayer(layer);
+    }
+  });
   baseLayers[selectedLayerName].addTo(map);
 });
 
@@ -141,14 +154,12 @@ function onMapClick(e) {
       y: Math.round(map.layerPointToContainerPoint(e.layerPoint).y),
     };
 
-    // Build the GetFeatureInfo URL
     const url = `${wmsUrl}?${new URLSearchParams(params).toString()}`;
 
-    // Fetch the feature info
     fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch GetFeatureInfo.");
+          throw new Error("Fetch falhado de: GetFeatureInfo.");
         }
         return response.json();
       })
@@ -157,29 +168,46 @@ function onMapClick(e) {
           const feature = data.features[0];
           const properties = feature.properties;
 
-          // Assuming API response structure
-          const formattedContent = `
-            <b>Tabela:</b> ${tableName}<br>
-            <b>Nome:</b> ${properties.nome || "N/A"}<br>
-            <b>Descrição:</b> ${properties.descricao || "N/A"}<br>
-            ${
-              properties.tipo
-                ? `<b>Tipo:</b> ${properties.nome_tipo || "N/A"} (${
-                    properties.tipo
-                  })<br>`
-                : ""
-            }
-            <b>Coordenadas:</b> Latitude ${
-              properties.coords?.latitude || "N/A"
-            }, Longitude ${properties.coords?.longitude || "N/A"}
-          `;
+          const featureId = feature.id.split(".")[1];
+          if (!featureId) {
+            console.error("ID da feature não encontrado.");
+            return;
+          }
 
-          // Show a popup with the formatted feature information
-          popup.setLatLng(e.latlng).setContent(formattedContent).openOn(map);
+          fetch(`http://localhost:3000/api/${tableName}/${featureId}`)
+            .then((apiResponse) => apiResponse.json())
+            .then((apiData) => {
+              const nomeTipo = apiData.info.nome_tipo;
+              const coords = apiData.info.coords;
+
+              const formattedContent = `
+                <b>Tabela:</b> ${tableName}<br>
+                <b>Nome:</b> ${properties.nome || "N/A"}<br>
+                <b>Descrição:</b> ${properties.descricao || "N/A"}<br>
+                ${
+                  nomeTipo
+                    ? `<b>Tipo:</b> ${nomeTipo} (${properties.tipo})<br>`
+                    : ""
+                }
+                <b>Coordenadas:</b> Latitude ${
+                  coords?.latitude || "N/A"
+                }, Longitude ${coords?.longitude || "N/A"}
+              `;
+
+              popup
+                .setLatLng(e.latlng)
+                .setContent(formattedContent)
+                .openOn(map);
+            })
+            .catch((error) => {
+              console.error("Erro no fetch da data da API:", error);
+            });
+        } else {
+          console.error("Informação apresentada!");
         }
       })
       .catch((error) => {
-        console.error("Error fetching feature info:", error);
+        console.error("Erro a dar fetch da feature na WMS:", error);
       });
   }
 }

@@ -10,6 +10,24 @@ The project directory structure is organized as follows:
 
 -//- 
 
+## Como meter estilos
+
+- Entrar no geoserver
+
+- Ir a estilos -> Novo estilo
+
+- Colocar o nome de um dos 5 ficheiros
+
+- Selecionar o workspace 'tp-sig', dar copy paste do código xml e Guardar
+
+- Ir á camada correspondente ao ficheiro xml
+
+- Clicar na mesma -> Publishing, Mudar o estilo padrão para aquele que acabamos de meter
+
+- Mudar o estilo de 'Disponível' para 'Selecionado'
+
+- Guardar e repetir este processo para as outras 4 tabelas.
+
 ## Como inserir base de dados
 
 - Entrar no pgadmin4

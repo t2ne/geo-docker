@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor version="1.0.0"
+    xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+    xmlns="http://www.opengis.net/sld"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>estradas</Name>
+        <UserStyle>
+            <Title>Estilo das Estradas</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>Linhas Vermelhas</Name>
+                    <Title>Estradas</Title>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#FF0000</CssParameter>
+                            <CssParameter name="stroke-width">2</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>Rótulos</Name>
+                    <TextSymbolizer>
+                        <Label>
+                            <ogc:PropertyName>nome</ogc:PropertyName>
+                        </Label>
+                        <Font>
+                            <CssParameter name="font-family">Arial</CssParameter>
+                            <CssParameter name="font-size">12</CssParameter>
+                            <CssParameter name="font-style">normal</CssParameter>
+                            <CssParameter name="font-weight">bold</CssParameter>
+                        </Font>
+                        <LabelPlacement>
+                            <LinePlacement>
+                                <PerpendicularOffset>5</PerpendicularOffset>
+                            </LinePlacement>
+                        </LabelPlacement>
+                        <Fill>
+                            <CssParameter name="fill">#000000</CssParameter>
+                        </Fill>
+                    </TextSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>

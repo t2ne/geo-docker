@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor version="1.0.0"
+    xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+    xmlns="http://www.opengis.net/sld"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>trilhos</Name>
+        <UserStyle>
+            <Title>Estilo dos Trilhos</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>Trilhos Linhas</Name>
+                    <Title>Trilhos Linhas</Title>
+                    <Abstract>Estilo para trilhos como linhas verdes</Abstract>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#008000</CssParameter> <!-- Verde -->
+                            <CssParameter name="stroke-width">2</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <!-- Label Style -->
+                <Rule>
+                    <Name>Rótulos</Name>
+                    <TextSymbolizer>
+                        <Label>
+                            <ogc:PropertyName>nome</ogc:PropertyName>
+                        </Label>
+                        <Font>
+                            <CssParameter name="font-family">Arial</CssParameter>
+                            <CssParameter name="font-size">12</CssParameter>
+                            <CssParameter name="font-style">normal</CssParameter>
+                            <CssParameter name="font-weight">bold</CssParameter>
+                        </Font>
+                        <LabelPlacement>
+                            <LinePlacement>
+                                <PerpendicularOffset>5</PerpendicularOffset>
+                            </LinePlacement>
+                        </LabelPlacement>
+                        <Fill>
+                            <CssParameter name="fill">#000000</CssParameter>
+                        </Fill>
+                        <VendorOption name="followLine">true</VendorOption>
+                        <VendorOption name="maxDisplacement">0</VendorOption>
+                    </TextSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>
