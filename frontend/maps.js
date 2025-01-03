@@ -24,6 +24,12 @@ const heatmapLayer = L.tileLayer(
   }
 );
 
+const espoLayer = L.tileLayer.wms("http://localhost:8081/geoserver/wms", {
+  layers: "tp-sig:esposende",
+  format: "image/png",
+  transparent: true,
+});
+
 const praiasLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
     layers: "tp-sig:praias",
@@ -67,6 +73,7 @@ const trilhosLayer = L.tileLayer
 
 const layerControl = L.control
   .layers(null, {
+    "Limites do Concelho": espoLayer,
     Praias: praiasLayer,
     Entidades: entidadesLayer,
     Estradas: estradasLayer,
@@ -81,13 +88,13 @@ L.control
     imperial: false,
   })
   .addTo(map);
+
 const baseLayers = {
   Estradas: roadsLayer,
   Satélite: satelliteLayer,
   HeatMap: heatmapLayer,
 };
 
-// Mantenha as camadas WMS fixas
 const wmsLayers = [
   praiasLayer,
   entidadesLayer,
@@ -95,6 +102,8 @@ const wmsLayers = [
   poisLayer,
   trilhosLayer,
 ];
+
+let bufferLayer = null;
 
 wmsLayers.forEach((layer) => layer.addTo(map));
 
@@ -170,7 +179,7 @@ function onMapClick(e) {
 
           const featureId = feature.id.split(".")[1];
           if (!featureId) {
-            console.error("ID da feature não encontrado.");
+            console.error("Info da Feature encontrada!");
             return;
           }
 
@@ -181,6 +190,7 @@ function onMapClick(e) {
               const coords = apiData.info.coords;
 
               const formattedContent = `
+              <div style="min-width: 400px">
                 <b>Tabela:</b> ${tableName}<br>
                 <b>Nome:</b> ${properties.nome || "N/A"}<br>
                 <b>Descrição:</b> ${properties.descricao || "N/A"}<br>
@@ -192,22 +202,71 @@ function onMapClick(e) {
                 <b>Coordenadas:</b> Latitude ${
                   coords?.latitude || "N/A"
                 }, Longitude ${coords?.longitude || "N/A"}
+                <br><b>Distância do buffer:</b> 
+                <input type="range" id="bufferSlider" min="0" max="1000" value="0" />
+                <span id="bufferValue">0</span> metros
+              </div>
               `;
 
-              popup
+              popup = L.popup({ minWidth: 370 })
                 .setLatLng(e.latlng)
                 .setContent(formattedContent)
                 .openOn(map);
+
+              document
+                .getElementById("bufferSlider")
+                .addEventListener("input", function () {
+                  const bufferDistance = this.value;
+                  document.getElementById("bufferValue").textContent =
+                    bufferDistance;
+
+                  if (bufferLayer) {
+                    console.log("Removendo o bufferLayer atual...");
+                    map.removeLayer(bufferLayer);
+                  }
+
+                  if (bufferDistance > 0) {
+                    console.log(
+                      "Buscando o buffer de distância:",
+                      bufferDistance
+                    );
+                    fetch(
+                      `http://localhost:3000/api/${tableName}/${featureId}/buffer/${bufferDistance}`
+                    )
+                      .then((bufferResponse) => bufferResponse.json())
+                      .then((bufferData) => {
+                        console.log("Buffer data:", bufferData); // Detailed log for debugging
+                        if (bufferData.bufferedGeom) {
+                          console.log(
+                            "Buffer encontrado, adicionando ao mapa..."
+                          );
+                          const bufferedGeoJSON = JSON.parse(
+                            bufferData.bufferedGeom
+                          );
+                          bufferLayer = L.geoJSON(bufferedGeoJSON, {
+                            style: { color: "blue", weight: 2, opacity: 0.5 },
+                          }).addTo(map);
+                        } else {
+                          console.log(
+                            "Nenhuma geometria de buffer encontrada."
+                          );
+                        }
+                      })
+                      .catch((error) => {
+                        console.error("Erro ao buscar o buffer:", error);
+                      });
+                  }
+                });
             })
             .catch((error) => {
               console.error("Erro no fetch da data da API:", error);
             });
         } else {
-          console.error("Informação apresentada!");
+          console.error("Informação da feature encontrada!");
         }
       })
       .catch((error) => {
-        console.error("Erro a dar fetch da feature na WMS:", error);
+        console.error("Erro ao fazer fetch da feature na WMS:", error);
       });
   }
 }
@@ -263,12 +322,54 @@ map.on("mousemove", function (e) {
 
 function searchFeatures() {
   const query = document.getElementById("searchBox").value.toLowerCase();
-  points.forEach((marker) => {
-    const markerName = marker.getPopup().getContent()?.toLowerCase();
-    if (markerName?.includes(query)) {
-      marker.openPopup();
-    } else {
-      marker.closePopup();
-    }
+
+  // Loop over all WMS layers
+  wmsLayers.forEach(({ layer, tableName }) => {
+    const wmsUrl = layer._url;
+    const params = {
+      request: "GetFeatureInfo",
+      service: "WMS",
+      srs: "EPSG:4326",
+      styles: "",
+      transparent: true,
+      version: "1.1.1",
+      format: "application/json",
+      bbox: map.getBounds().toBBoxString(),
+      height: map.getSize().y,
+      width: map.getSize().x,
+      layers: layer.wmsParams.layers,
+      query_layers: layer.wmsParams.layers,
+      info_format: "application/json",
+      x: Math.round(map.layerPointToContainerPoint(e.layerPoint).x),
+      y: Math.round(map.layerPointToContainerPoint(e.layerPoint).y),
+    };
+
+    const url = `${wmsUrl}?${new URLSearchParams(params).toString()}`;
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Fetch failed for GetFeatureInfo.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.features && data.features.length > 0) {
+          data.features.forEach((feature) => {
+            const featureName = feature.properties.nome || "";
+            const featureId = feature.id.split(".")[1];
+            if (featureName.toLowerCase().includes(query)) {
+              // Show the feature if the name matches the query
+              layer.addLayer(feature); // Add the feature to the layer if it matches
+            } else {
+              // Hide the feature if it doesn't match the query
+              layer.removeLayer(feature); // Remove it from the layer if it doesn't match
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching WMS feature info:", error);
+      });
   });
 }

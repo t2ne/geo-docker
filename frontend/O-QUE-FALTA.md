@@ -1,9 +1,9 @@
 ## FALTA:
 
-- SearchFeatures()
-
-- HeatMap - leaflet-heat
+- Fix nas SearchFeatures()
   
-- Slider dentro do popup que chama um getBufferTable a cada mudança
+- Fix do display do buffer
   
 - Preview de como está a linha/polígono, e a distância/área do momento
+
+- HeatMap - leaflet-heat
