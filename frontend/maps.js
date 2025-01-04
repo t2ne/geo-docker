@@ -16,7 +16,7 @@ const satelliteLayer = L.tileLayer(
   }
 );
 
-const heatmapLayer = L.tileLayer(
+const heatmapBackgroundLayer = L.tileLayer(
   "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
   {
     attribution:
@@ -24,6 +24,39 @@ const heatmapLayer = L.tileLayer(
   }
 );
 
+let heatmapLayerInstance = null;
+
+function loadHeatmapData() {
+  fetch("heatmap-layer.csv")
+    .then((response) => response.text())
+    .then((csv) => {
+      Papa.parse(csv, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          const heatmapData = results.data.map((row) => {
+            const lat = parseFloat(row.latitude);
+            const lng = parseFloat(row.longitude);
+            const intensity = parseFloat(row.pop_max || 1);
+            return [lat, lng, intensity];
+          });
+
+          createHeatmapLayer(heatmapData);
+        },
+      });
+    });
+}
+
+function createHeatmapLayer(data) {
+  if (heatmapLayerInstance) {
+    map.removeLayer(heatmapLayerInstance);
+  }
+  heatmapLayerInstance = L.heatLayer(data, {
+    radius: 20,
+    blur: 25,
+    maxZoom: 16,
+  });
+}
 const espoLayer = L.tileLayer.wms("http://localhost:8081/geoserver/wms", {
   layers: "tp-sig:esposende",
   format: "image/png",
@@ -92,7 +125,6 @@ L.control
 const baseLayers = {
   Estradas: roadsLayer,
   Satélite: satelliteLayer,
-  HeatMap: heatmapLayer,
 };
 
 const wmsLayers = [
@@ -115,8 +147,34 @@ layerSelectBox.addEventListener("change", (e) => {
       map.removeLayer(layer);
     }
   });
-  baseLayers[selectedLayerName].addTo(map);
+
+  wmsLayers.forEach((layer) => {
+    if (map.hasLayer(layer)) {
+      map.removeLayer(layer);
+    }
+  });
+
+  if (selectedLayerName === "HeatMap") {
+    heatmapBackgroundLayer.addTo(map);
+    if (heatmapLayerInstance) {
+      heatmapLayerInstance.addTo(map);
+    }
+  } else {
+    if (map.hasLayer(heatmapBackgroundLayer)) {
+      map.removeLayer(heatmapBackgroundLayer);
+    }
+
+    if (heatmapLayerInstance) {
+      map.removeLayer(heatmapLayerInstance);
+    }
+
+    baseLayers[selectedLayerName].addTo(map);
+
+    wmsLayers.forEach((layer) => layer.addTo(map));
+  }
 });
+
+loadHeatmapData();
 
 let bufferLayer = null;
 let points = [];
