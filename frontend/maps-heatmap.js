@@ -24,6 +24,77 @@ const heatmapLayer = L.tileLayer(
   }
 );
 
+// Create heat map layers
+let heatmapGroup = L.layerGroup();
+
+async function fetchAndCreateHeatmap() {
+  try {
+    // Clear existing heat layers
+    heatmapGroup.clearLayers();
+
+    const layers = [
+      {
+        url: "http://localhost:3000/api/praias",
+        intensity: 1,
+        color: "#ff0000",
+      },
+      {
+        url: "http://localhost:3000/api/entidades",
+        intensity: 0.8,
+        color: "#00ff00",
+      },
+      {
+        url: "http://localhost:3000/api/estradas",
+        intensity: 0.6,
+        color: "#0000ff",
+      },
+      {
+        url: "http://localhost:3000/api/pois",
+        intensity: 0.9,
+        color: "#ffff00",
+      },
+      {
+        url: "http://localhost:3000/api/trilhos",
+        intensity: 0.7,
+        color: "#ff00ff",
+      },
+    ];
+
+    for (const { url, intensity, color } of layers) {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data && data.features) {
+          const points = data.features.map((feature) => {
+            const coords = feature.geometry.coordinates;
+            const coord = Array.isArray(coords[0]) ? coords[0] : coords;
+            return [coord[1], coord[0], intensity];
+          });
+
+          if (points.length > 0) {
+            const heatLayer = L.heatLayer(points, {
+              radius: 25,
+              blur: 15,
+              maxZoom: 18,
+              max: intensity,
+              gradient: {
+                0.4: color,
+                0.8: "#ffffff",
+              },
+            });
+            heatmapGroup.addLayer(heatLayer);
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+      }
+    }
+  } catch (error) {
+    console.error("Error creating heatmap:", error);
+  }
+}
+
 const espoLayer = L.tileLayer.wms("http://localhost:8081/geoserver/wms", {
   layers: "tp-sig:esposende",
   format: "image/png",
@@ -107,7 +178,7 @@ wmsLayers.forEach((layer) => layer.addTo(map));
 
 const layerSelectBox = document.getElementById("layer-select");
 
-layerSelectBox.addEventListener("change", (e) => {
+layerSelectBox.addEventListener("change", async (e) => {
   const selectedLayerName = e.target.value;
 
   Object.values(baseLayers).forEach((layer) => {
@@ -115,7 +186,37 @@ layerSelectBox.addEventListener("change", (e) => {
       map.removeLayer(layer);
     }
   });
-  baseLayers[selectedLayerName].addTo(map);
+
+  if (map.hasLayer(heatmapGroup)) {
+    map.removeLayer(heatmapGroup);
+  }
+
+  if (selectedLayerName === "HeatMap") {
+    heatmapLayer.addTo(map);
+
+    wmsLayers.forEach((layer) => {
+      if (map.hasLayer(layer)) {
+        map.removeLayer(layer);
+      }
+    });
+
+    await fetchAndCreateHeatmap();
+    heatmapGroup.addTo(map);
+  } else {
+    baseLayers[selectedLayerName].addTo(map);
+
+    wmsLayers.forEach((layer) => {
+      if (!map.hasLayer(layer)) {
+        layer.addTo(map);
+      }
+    });
+  }
+});
+
+map.on("moveend", async () => {
+  if (layerSelectBox.value === "HeatMap" && map.hasLayer(heatmapGroup)) {
+    await fetchAndCreateHeatmap();
+  }
 });
 
 let bufferLayer = null;

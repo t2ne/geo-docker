@@ -1,9 +1,5 @@
 ## FALTA:
-
-- Fix nas SearchFeatures()
   
-- Fix do display do buffer
+- Fix de buscar a table certa no offset
   
-- Preview de como está a linha/polígono, e a distância/área do momento
-
-- HeatMap - leaflet-heat
+- Fix no heatmap
