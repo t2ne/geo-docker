@@ -21,7 +21,6 @@
                         </Stroke>
                     </LineSymbolizer>
                 </Rule>
-                <!-- Label Style -->
                 <Rule>
                     <Name>Rótulos</Name>
                     <TextSymbolizer>

@@ -50,7 +50,6 @@
                         </Stroke>
                     </PolygonSymbolizer>
                 </Rule>
-                <!-- Labels -->
                 <Rule>
                     <Name>Rótulos</Name>
                     <TextSymbolizer>

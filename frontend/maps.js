@@ -58,14 +58,14 @@ function createHeatmapLayer(data) {
   });
 }
 const espoLayer = L.tileLayer.wms("http://localhost:8081/geoserver/wms", {
-  layers: "tp-sig:esposende",
+  layers: "sig28837:esposende",
   format: "image/png",
   transparent: true,
 });
 
 const praiasLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
-    layers: "tp-sig:praias",
+    layers: "sig28837:praias",
     format: "image/png",
     transparent: true,
   })
@@ -73,7 +73,7 @@ const praiasLayer = L.tileLayer
 
 const entidadesLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
-    layers: "tp-sig:entidades",
+    layers: "sig28837:entidades",
     format: "image/png",
     transparent: true,
   })
@@ -81,7 +81,7 @@ const entidadesLayer = L.tileLayer
 
 const estradasLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
-    layers: "tp-sig:estradas",
+    layers: "sig28837:estradas",
     format: "image/png",
     transparent: true,
   })
@@ -89,7 +89,7 @@ const estradasLayer = L.tileLayer
 
 const poisLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
-    layers: "tp-sig:pois",
+    layers: "sig28837:pois",
     format: "image/png",
     transparent: true,
   })
@@ -97,7 +97,7 @@ const poisLayer = L.tileLayer
 
 const trilhosLayer = L.tileLayer
   .wms("http://localhost:8081/geoserver/wms", {
-    layers: "tp-sig:trilhos",
+    layers: "sig28837:trilhos",
     format: "image/png",
     transparent: true,
     attribution: "t2ne 2025",
@@ -169,7 +169,6 @@ layerSelectBox.addEventListener("change", (e) => {
     }
 
     baseLayers[selectedLayerName].addTo(map);
-
     wmsLayers.forEach((layer) => layer.addTo(map));
   }
 });
@@ -299,7 +298,9 @@ function onMapClick(e) {
                               pois: { polygon: [50.33, 50.33] },
                               trilhos: { line: [50.29, 50.29] },
                             };
-                            return offsets[table][geomType] || [50.32, 50.32]; // Offset default, se as tablas não forem encontradas
+                            return (
+                              offsets[table][geomType] || [50.3155, 50.3155]
+                            );
                           }
 
                           const geomType = bufferedGeoJSON.type.toLowerCase();

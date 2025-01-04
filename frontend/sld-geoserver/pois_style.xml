@@ -10,7 +10,6 @@
         <UserStyle>
             <Title>Estilo dos POIs</Title>
             <FeatureTypeStyle>
-                <!-- Style for tipo = 4 (Brown) -->
                 <Rule>
                     <Name>Tipo 4</Name>
                     <ogc:Filter>
@@ -21,7 +20,7 @@
                     </ogc:Filter>
                     <PolygonSymbolizer>
                         <Fill>
-                            <CssParameter name="fill">#8B4513</CssParameter> <!-- Brown -->
+                            <CssParameter name="fill">#8B4513</CssParameter> <!-- Castanho -->
                             <CssParameter name="fill-opacity">0.6</CssParameter>
                         </Fill>
                         <Stroke>
@@ -30,7 +29,6 @@
                         </Stroke>
                     </PolygonSymbolizer>
                 </Rule>
-                <!-- Style for tipo = 8 (Pink) -->
                 <Rule>
                     <Name>Tipo 8</Name>
                     <ogc:Filter>
@@ -41,7 +39,7 @@
                     </ogc:Filter>
                     <PolygonSymbolizer>
                         <Fill>
-                            <CssParameter name="fill">#FFC0CB</CssParameter> <!-- Pink -->
+                            <CssParameter name="fill">#FFC0CB</CssParameter> <!-- Rosa -->
                             <CssParameter name="fill-opacity">0.6</CssParameter>
                         </Fill>
                         <Stroke>
@@ -50,7 +48,6 @@
                         </Stroke>
                     </PolygonSymbolizer>
                 </Rule>
-                <!-- Style for tipo = 3 (Orange) -->
                 <Rule>
                     <Name>Tipo 3</Name>
                     <ogc:Filter>
@@ -61,7 +58,7 @@
                     </ogc:Filter>
                     <PolygonSymbolizer>
                         <Fill>
-                            <CssParameter name="fill">#FFA500</CssParameter> <!-- Orange -->
+                            <CssParameter name="fill">#FFA500</CssParameter> <!-- Laranja -->
                             <CssParameter name="fill-opacity">0.6</CssParameter>
                         </Fill>
                         <Stroke>
@@ -70,7 +67,6 @@
                         </Stroke>
                     </PolygonSymbolizer>
                 </Rule>
-                <!-- Labels for POIs -->
                 <Rule>
                     <Name>Rótulos</Name>
                     <TextSymbolizer>
@@ -92,7 +88,7 @@
                             </PointPlacement>
                         </LabelPlacement>
                         <Fill>
-                            <CssParameter name="fill">#000000</CssParameter> <!-- Black text -->
+                            <CssParameter name="fill">#000000</CssParameter> <!-- Texto preto -->
                         </Fill>
                     </TextSymbolizer>
                 </Rule>

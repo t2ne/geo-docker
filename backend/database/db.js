@@ -7,7 +7,7 @@ class Database {
       port: 5432,
       user: "postgres",
       password: "postgres",
-      database: "tp-sig",
+      database: "sig28837",
     });
   }
 
@@ -66,7 +66,6 @@ class Database {
     return null;
   }
 
-  // Praia methods
   async getPraiasId() {
     const result = await this.conexao.query("SELECT id FROM praias");
     return result.rows.map((row) => row.id);
@@ -108,7 +107,6 @@ class Database {
     return null;
   }
 
-  // POI methods
   async getPoisId() {
     const result = await this.conexao.query("SELECT id FROM pois");
     return result.rows.map((row) => row.id);
@@ -162,7 +160,6 @@ class Database {
     return null;
   }
 
-  // Estradas and Trilhos methods
   async getEstradasId() {
     const result = await this.conexao.query("SELECT id FROM estradas");
     return result.rows.map((row) => row.id);
@@ -252,7 +249,6 @@ class Database {
     return null;
   }
 
-  // Shared methods to get Latitude and Longitude
   async getLatitude(id, table) {
     const result = await this.conexao.query(
       `SELECT ST_Y(ST_Transform(ST_Centroid(geom), 3763)) AS latitude FROM ${table} WHERE id = $1`,

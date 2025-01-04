@@ -9,7 +9,7 @@
         <Name>esposende</Name>
         <UserStyle>
             <Title>Thin Red Outline</Title>
-            <Abstract>A style for esposende with no fill and a thin red outline.</Abstract>
+            <Abstract>Um estilo para esposende com uma linha vermelha.</Abstract>
             <FeatureTypeStyle>
                 <Rule>
                     <Title>Outline</Title>

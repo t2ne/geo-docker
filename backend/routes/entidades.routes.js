@@ -3,7 +3,6 @@ const Database = require("../database/db");
 
 const router = express.Router();
 
-// Get all entity IDs
 router.get("/", async (req, res) => {
   const db = new Database();
   try {
@@ -33,7 +32,6 @@ router.get("/:id/", async (req, res) => {
   }
 });
 
-// Get entity type by ID
 router.get("/:id/tipo/", async (req, res) => {
   const { id } = req.params;
   const db = new Database();
@@ -53,7 +51,6 @@ router.get("/:id/tipo/", async (req, res) => {
   }
 });
 
-// Get entity coordinates by ID
 router.get("/:id/coords", async (req, res) => {
   const { id } = req.params;
   const db = new Database();

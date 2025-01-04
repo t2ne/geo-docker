@@ -41,3 +41,4 @@ networks:
 volumes:
   pg_data:
   pgadmin_data:
+  
