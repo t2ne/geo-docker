@@ -77,10 +77,16 @@ Uma das maneiras, e a que foi utilizada para ver `index.html`, foi instalar a ex
 2. Crie a base de dados:
    - Right-click em "Databases" -> Create -> Database.
    - Nomeie como `sig28837`.
+
+3. Copie o ficheiro `sig28837.sql`
+
+4. Vá até á localização:
+    `\\wsl.localhost\docker-desktop\mnt\docker-desktop-disk\data\docker\overlay2\uma_das_pastas\merged\tmp`
+   ...onde "uma_das_pastas" é aquela em que contém os ficheiros do pgadmin, e coloque aí o ficheiro sql.
   
-3. Restaure a base de dados:
+5. Restaure a base de dados:
    - Right-click em `sig28837` -> Restore.
-   - Selecione o arquivo `sig28837.sql`.
+   - Selecione o arquivo `sig28837.sql` na pasta `tmp`.
 
 ### Como publicar camadas no GeoServer
 
