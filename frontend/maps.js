@@ -27,7 +27,7 @@ const heatmapBackgroundLayer = L.tileLayer(
 let heatmapLayerInstance = null;
 
 function loadHeatmapData() {
-  fetch("heatmap-layer.csv")
+  fetch("heatmap-layer-carto.csv")
     .then((response) => response.text())
     .then((csv) => {
       Papa.parse(csv, {
