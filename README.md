@@ -70,7 +70,15 @@ Uma das maneiras, e a que foi utilizada para ver `index.html`, foi instalar a ex
 
 ## 🔧 Configuração
 
-### Como inserir a base de dados
+### Como inserir a base de dados:
+
+#### Plain:
+
+1. Copiar conteúdos do ficheiro sig28837-plain.sql
+
+2. Dar paste na Query Tool do pgadmin4.
+
+#### Não-Plain:
 
 1. Abra o pgAdmin.
    
