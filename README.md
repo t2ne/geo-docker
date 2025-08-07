@@ -1,122 +1,117 @@
+# 🌍 GIS Project - Spatial Data Management
 
-# 🌍 SIG Project - Gestão de Dados Espaciais
+An application developed for the Geographic Information Systems (GIS) course. This project uses QGIS, pgAdmin, GeoServer, Docker, and Leaflet to efficiently manage and visualize geospatial data.
 
-Uma aplicação desenvolvida para a disciplina de Sistemas de Informação Geográfica (SIG). Este projeto utiliza QGIS, pgAdmin, GeoServer, Docker e Leaflet para gerir e visualizar dados geoespaciais de forma eficiente.
+## 🌟 Features
 
-## 🌟 Funcionalidades
-- **Gestão de Camadas Geoespaciais**: Publicação e visualização de camadas como trilhos, estradas, praias, pontos de interesse e entidades.
-  
-- **Visualização Interativa**: Inclui mapas base como estradas, satélite e heatmap.
-  
-- **Cálculo Geométrico**: Ferramentas para cálculo de áreas e distâncias diretamente no mapa.
-  
-- **Camadas WMS**: Integração com GeoServer para visualização de camadas WMS.
-  
-- **Buffer**: Cálculo e visualização do buffer de qualquer geometria.
-  
-- **Pesquisa**: Pesquisa dinâmica pelos nomes de todas as 'features'.
-  
-- **API Backend**: Comunicação com uma API Node.js para operações CRUD em bases de dados espaciais.
+- **Geospatial Layer Management**: Publication and visualization of layers such as trails, roads, beaches, points of interest, and entities.
+- **Interactive Visualization**: Includes base maps such as roads, satellite, and heatmap.
+- **Geometric Calculation**: Tools for calculating areas and distances directly on the map.
+- **WMS Layers**: Integration with GeoServer for WMS layer visualization.
+- **Buffer**: Calculation and visualization of buffer for any geometry.
+- **Search**: Dynamic search by names of all features.
+- **Backend API**: Communication with a Node.js API for CRUD operations on spatial databases.
 
-## 🛠️ Instalação
+## 🛠️ Installation
 
-### Clone o repositório:
+### Clone the repository:
 
 ```bash
 git clone https://github.com/t2ne/geo-docker.git
 ```
 
-### Configure o ambiente:
+### Configure the environment:
 
 #### Backend:
 
-1. Navegue até o diretório do projeto:
+1. Navigate to the project directory:
+
    ```bash
    cd geo-docker
    ```
 
-2. Instale as dependências:
+2. Install the dependencies:
+
    ```bash
    npm install
    ```
 
-3. Instale o `nodemon` globalmente:
+3. Install `nodemon` globally:
+
    ```bash
    npm install -g nodemon
    ```
 
-4. Execute o servidor da API com `nodemon`:
+4. Run the API server with `nodemon`:
    ```bash
    nodemon server.js
    ```
 
-Parte dos dados (como o nome do tipo e as coordenadas) são vindas da API, portanto é importante que, no mínimo, ambos o **geoserver** e a **API** estejam a correr para tudo funcionar.
+Part of the data (such as type name and coordinates) comes from the API, so it's important that at minimum both the **geoserver** and the **API** are running for everything to work.
 
 #### Frontend:
 
-Uma das maneiras, e a que foi utilizada para ver `index.html`, foi instalar a extensão **Live Server** no VS Code e abrir um servidor do mesmo.
-
+One of the ways, and the one that was used to view `index.html`, was to install the **Live Server** extension in VS Code and open a server from it.
 
 #### GeoServer:
 
-- Configure os estilos e publique as camadas (ver seção **Configuração**).
+- Configure styles and publish layers (see **Configuration** section).
 
-#### Base de Dados:
+#### Database:
 
-- Restaure o arquivo `sig28837.sql` no pgAdmin (ver seção **Como inserir base de dados**).
-- Abra o frontend no navegador (se aplicável).
+- Restore the `sig28837.sql` file in pgAdmin (see **How to insert database** section).
+- Open the frontend in the browser (if applicable).
 
 ---
 
-## 🔧 Configuração
+## 🔧 Configuration
 
-### Como inserir a base de dados:
+### How to insert the database:
 
 #### Plain:
 
-1. Copiar conteúdos do ficheiro sig28837-plain.sql
+1. Copy contents of the sig28837-plain.sql file
 
-2. Dar paste na Query Tool do pgadmin4.
+2. Paste in the Query Tool of pgadmin4.
 
-#### Não-Plain:
+#### Non-Plain:
 
-1. Abra o pgAdmin.
-   
-2. Crie a base de dados:
-   - Right-click em "Databases" -> Create -> Database.
-   - Nomeie como `sig28837`.
+1. Open pgAdmin.
+2. Create the database:
 
-3. Copie o ficheiro `sig28837.sql`
+   - Right-click on "Databases" -> Create -> Database.
+   - Name it `sig28837`.
 
-4. Vá até á localização:
-    `\\wsl.localhost\docker-desktop\mnt\docker-desktop-disk\data\docker\overlay2\uma_das_pastas\merged\tmp`
-   ...onde "uma_das_pastas" é aquela em que contém os ficheiros do pgadmin, e coloque aí o ficheiro sql.
-  
-5. Restaure a base de dados:
-   - Right-click em `sig28837` -> Restore.
-   - Selecione o arquivo `sig28837.sql` na pasta `tmp`.
+3. Copy the `sig28837.sql` file
 
-### Como publicar camadas no GeoServer
+4. Go to the location:
+   `\\wsl.localhost\docker-desktop\mnt\docker-desktop-disk\data\docker\overlay2\one_of_the_folders\merged\tmp`
+   ...where "one_of_the_folders" is the one that contains the pgadmin files, and place the sql file there.
 
-1. Acesse o GeoServer.
-   
-2. Crie os estilos:
-   - Vá a "Estilos" -> "Novo Estilo".
-   - Copie e cole o código XML correspondente.
-   - Aplique o estilo à camada desejada.
-  
-3. Publique as camadas:
-   - Configure as `stores`, `layers` e vincule os estilos criados.
+5. Restore the database:
+   - Right-click on `sig28837` -> Restore.
+   - Select the `sig28837.sql` file in the `tmp` folder.
 
-### Corrigir CORS no GeoServer (se necessário)
+### How to publish layers in GeoServer
 
-1. Acesse o container do GeoServer no Docker.
+1. Access GeoServer.
+2. Create the styles:
 
-2. Edite o arquivo `web.xml` em `/usr/local/tomcat/webapps/geoserver/WEB-INF`.
+   - Go to "Styles" -> "Add New Style".
+   - Copy and paste the corresponding XML code.
+   - Apply the style to the desired layer.
 
-3. Habilite o CORS (descomente as linhas 165 a 201).
-   
-4. Reinicie o container:
+3. Publish the layers:
+   - Configure the `stores`, `layers` and link the created styles.
+
+### Fix CORS in GeoServer (if necessary)
+
+1. Access the GeoServer container in Docker.
+
+2. Edit the `web.xml` file in `/usr/local/tomcat/webapps/geoserver/WEB-INF`.
+
+3. Enable CORS (uncomment lines 165 to 201).
+4. Restart the container:
    ```bash
    su
    cd /usr/local/tomcat/bin
@@ -127,21 +122,22 @@ Uma das maneiras, e a que foi utilizada para ver `index.html`, foi instalar a ex
 
 ---
 
-## 🌐 Navegadores Suportados
+## 🌐 Supported Browsers
 
-Testado em:
+Tested on:
+
 - Chrome
 - Firefox
 - Edge
 
 ---
 
-## 🙋‍♂️ Autor
+## 🙋‍♂️ Author
 
 - @t2ne
 
 ---
 
-## 🎓 Projeto Académico
+## 🎓 Academic Project
 
-Este projeto foi desenvolvido como parte de um trabalho universitário, integrando bases de dados espaciais, servidores de mapas e frontend interativo.
+This project was developed as part of a university assignment, integrating spatial databases, map servers, and interactive frontend.
